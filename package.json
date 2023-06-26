@@ -22,14 +22,18 @@
     "@refinedev/react-table": "^5.1.4",
     "@refinedev/simple-rest": "^4.0.0",
     "@tabler/icons": "^1.1.0",
+    "@tanstack/react-table": "^8.9.3",
     "axios": "^0.26.1",
+    "casbin": "^5.26.1",
+    "currency.js": "^2.0.4",
     "query-string": "^7.1.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.8.1",
     "react-scripts": "^5.0.0",
     "socket.io-client": "^4.7.0",
-    "undangon-server": "http://localhost:3030/undangon-server-0.0.0.tgz"
+    "undangon-server": "http://localhost:3030/undangon-server-0.0.0.tgz",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",

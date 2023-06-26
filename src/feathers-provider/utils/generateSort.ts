@@ -1,19 +1,13 @@
 import { CrudSorting } from "@refinedev/core";
 
 export const generateSort = (sorters?: CrudSorting) => {
+  const sort: { [key: string]: number } = {};
   if (sorters && sorters.length > 0) {
-    const _sort: string[] = [];
-    const _order: string[] = [];
-
-    sorters.map((item) => {
-      _sort.push(item.field);
-      _order.push(item.order);
+    sorters.forEach((item) => {
+      sort[item.field] = item.order === "asc" ? 1 : 0;
     });
 
-    return {
-      _sort,
-      _order,
-    };
+    return sort;
   }
 
   return;
