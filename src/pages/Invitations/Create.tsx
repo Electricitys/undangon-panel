@@ -5,19 +5,21 @@ import { InvitationSchema } from "interfaces";
 
 type InvitationData = Pick<
   InvitationSchema,
-  "name" | "category_id" | "slug" | "package_id"
+  "name" | "category_id" | "slug" | "package_id" | "content"
 >;
 
 export const InvitationCreate: React.FC = () => {
-  const {
-    getInputProps,
-    saveButtonProps,
-  } = useForm<InvitationSchema, HttpError, InvitationData>({
+  const { getInputProps, saveButtonProps } = useForm<
+    InvitationSchema,
+    HttpError,
+    InvitationData
+  >({
     initialValues: {
       name: "",
       slug: "",
       category_id: 0,
       package_id: 0,
+      content: " ",
     },
   });
 

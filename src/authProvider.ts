@@ -6,68 +6,75 @@ import {
 import { featherInstance } from "feathers-provider/feathersClient";
 
 // It is a mock auth provider.
-export const authProvider: AuthBindings = {
-  // required methods
-  login: async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<AuthActionResponse> => {
-    const result = await featherInstance.authenticate({
-      strategy: "local",
+export const authProvider: AuthBindings = (() => {
+  let isPresist: boolean = false;
+  return {
+    // required methods
+    login: async ({
       email,
       password,
-    });
+      remember = false,
+    }: {
+      email: string;
+      password: string;
+      remember: boolean;
+    }): Promise<AuthActionResponse> => {
 
-    if (result) {
+      const result = await featherInstance.authenticate({
+        strategy: "local",
+        email,
+        password,
+      });
+
+      if (result) {
+        return {
+          success: true,
+          redirectTo: "/",
+        };
+      }
+
+      return {
+        success: false,
+        error: {
+          message: "Invalid credentials",
+          name: "Invalid credentials",
+        },
+      };
+    },
+    check: async (force: boolean = false): Promise<CheckResponse> => {
+      try {
+        await featherInstance.reAuthenticate(force);
+        return {
+          authenticated: true,
+        };
+      } catch (err) {
+        return {
+          authenticated: false,
+          logout: true,
+          redirectTo: "/login",
+          error: {
+            message: (err as any).message,
+            name: "Unauthorized",
+          },
+        };
+      }
+    },
+    logout: async ({ redirectPath }: any = {}): Promise<AuthActionResponse> => {
+      await featherInstance.logout();
       return {
         success: true,
-        redirectTo: "/",
+        redirectTo: redirectPath || "/",
       };
-    }
-
-    return {
-      success: false,
-      error: {
-        message: "Invalid credentials",
-        name: "Invalid credentials",
-      },
-    };
-  },
-  check: async (force: boolean = false): Promise<CheckResponse> => {
-    const result = await featherInstance.reAuthenticate(force);
-    if (result) {
-      return {
-        authenticated: true,
-      };
-    }
-    return {
-      authenticated: false,
-      logout: true,
-      redirectTo: "/login",
-      error: {
-        message: "Check failed",
-        name: "Unauthorized",
-      },
-    };
-  },
-  logout: async (params: any): Promise<AuthActionResponse> => {
-    await featherInstance.logout();
-    return {
-      success: true,
-      redirectTo: "/login",
-    };
-  },
-  onError: async (error) => {
-    if (error.status === 401 || error.status === 403) {
-      return {
-        logout: true,
-        redirectTo: "/login",
-        error,
-      };
-    }
-    return {};
-  },
-};
+    },
+    onError: async (error) => {
+      if (error.status === 401 || error.status === 403) {
+        return {
+          logout: true,
+          redirectTo: "/login",
+          error,
+        };
+      }
+      return {};
+    },
+  };
+})();

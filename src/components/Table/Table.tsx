@@ -19,8 +19,7 @@ export const Table: React.FC<{
               <th key={header.id}>
                 <Flex
                   sx={{
-                    cursor:
-                      header.column.id !== "actions" ? "pointer" : undefined,
+                    cursor: header.column.getCanSort() ? "pointer" : undefined,
                     ".sort-action": {
                       opacity: 0,
                     },
@@ -28,10 +27,7 @@ export const Table: React.FC<{
                       opacity: 1,
                     },
                   }}
-                  onClick={() =>
-                    header.column.id !== "actions" &&
-                    header.column.toggleSorting()
-                  }
+                  onClick={header.column.getToggleSortingHandler()}
                 >
                   <Text sx={{ flexGrow: 1 }}>
                     {header.isPlaceholder
@@ -41,7 +37,7 @@ export const Table: React.FC<{
                           header.getContext()
                         )}
                   </Text>
-                  {header.column.id !== "actions" && (
+                  {header.column.getCanSort() && (
                     <ActionIcon
                       className={`sort-action ${
                         header.column.getIsSorted() && "active"

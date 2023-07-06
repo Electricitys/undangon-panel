@@ -2,7 +2,6 @@ import { Refine, WelcomePage, Authenticated } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 
 import {
-  AuthPage,
   ErrorComponent,
   notificationProvider,
   RefineThemes,
@@ -59,6 +58,8 @@ import {
   IconUsers,
 } from "@tabler/icons";
 import { Header } from "components";
+import { AuthPage } from "components/pages/auth";
+import { ThemedSiderV2 } from "components/themedLayout/sider";
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -148,13 +149,19 @@ function App() {
                 ]}
               >
                 <Routes>
-                  <Route index element={<WelcomePage />} />
+                  <Route
+                    index
+                    element={<NavigateToResource resource="invitations" />}
+                  />
                   <Route
                     element={
                       <Authenticated
                         fallback={<CatchAllNavigate to="/login" />}
                       >
-                        <ThemedLayoutV2 Header={Header}>
+                        <ThemedLayoutV2
+                          Header={Header}
+                          Sider={() => <ThemedSiderV2 />}
+                        >
                           <Outlet />
                         </ThemedLayoutV2>
                       </Authenticated>
@@ -199,14 +206,32 @@ function App() {
                   <Route
                     element={
                       <Authenticated fallback={<Outlet />}>
-                        <NavigateToResource />
+                        {/* <NavigateToResource resource="invitations" /> */}
                       </Authenticated>
                     }
                   >
                     <Route path="/login" element={<AuthPage type="login" />} />
+                    <Route
+                      path="/register"
+                      element={<AuthPage type="register" />}
+                    />
+                    <Route
+                      path="/forgot-password"
+                      element={<AuthPage type="forgotPassword" />}
+                    />
                   </Route>
 
-                  <Route path="*" element={<ErrorComponent />} />
+                  <Route
+                    element={
+                      <Authenticated>
+                        <ThemedLayoutV2>
+                          <Outlet />
+                        </ThemedLayoutV2>
+                      </Authenticated>
+                    }
+                  >
+                    <Route path="*" element={<ErrorComponent />} />
+                  </Route>
                 </Routes>
                 <RefineKbar />
                 <UnsavedChangesNotifier />

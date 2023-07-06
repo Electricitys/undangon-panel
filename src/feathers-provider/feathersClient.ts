@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
 featherInstance.configure(restClient.axios(axiosInstance));
 featherInstance.configure(
   authentication({
-    storage: window.localStorage,
+    storage: localStorage,
     storageKey: "undangon_client",
   })
 );

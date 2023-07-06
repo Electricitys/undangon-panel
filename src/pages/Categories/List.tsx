@@ -45,6 +45,7 @@ export const CategoryList: React.FC = () => {
         id: "actions",
         accessorKey: "id",
         header: "Actions",
+        enableSorting: false,
         cell: function render({ getValue }) {
           return (
             <Group spacing="xs" noWrap>
