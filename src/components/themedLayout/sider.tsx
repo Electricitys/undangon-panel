@@ -6,14 +6,12 @@ import {
   useLink,
   useLogout,
   useMenu,
-  useActiveAuthProvider,
   useRefineContext,
   useRouterContext,
   useRouterType,
   useTitle,
   useTranslate,
   useWarnAboutChange,
-  useGo,
 } from "@refinedev/core";
 import {
   ThemedTitleV2 as DefaultTitle,
@@ -49,14 +47,10 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
   const { siderCollapsed, mobileSiderOpen, setMobileSiderOpen } =
     useThemedLayoutContext();
 
-  const go = useGo();
-
   const routerType = useRouterType();
   const NewLink = useLink();
   const { Link: LegacyLink } = useRouterContext();
   const Link = routerType === "legacy" ? LegacyLink : NewLink;
-  const authProvider = useActiveAuthProvider();
-  console.log(authProvider);
 
   const { defaultOpenKeys, menuItems, selectedKey } = useMenu({ meta });
   const TitleFromContext = useTitle();
@@ -184,17 +178,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
         mutateLogout();
       }
     } else {
-      // if (typeof authProvider?.logout !== "undefined") {
-      //   authProvider?.logout({});
-      // }
-      // if (authProvider) {
-      //   authProvider?.logout();
-      // }
       mutateLogout();
-      // go({
-      //   to: "/login",
-      //   type: "push",
-      // });
     }
   };
 

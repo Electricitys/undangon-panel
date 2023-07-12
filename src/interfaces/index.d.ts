@@ -7,6 +7,12 @@ export interface DefaultDataSchema extends TimestampSchema {
   id: number;
 }
 
+export interface AuthenticationResponse {
+  accessToken: string;
+  authentication: object;
+  user: UserSchema;
+}
+
 export type UserRolesSchema = "admin" | "maintainer" | "user" | "public";
 
 export interface UserSchema extends DefaultDataSchema {

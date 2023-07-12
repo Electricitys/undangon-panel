@@ -4,9 +4,14 @@ import {
   CheckResponse,
 } from "@refinedev/core/dist/interfaces";
 import { featherInstance } from "feathers-provider/feathersClient";
+import { AuthenticationResponse, UserSchema } from "interfaces";
+
+interface IAuthBindings extends AuthBindings {
+  getIdentity: (params?: any) => Promise<AuthenticationResponse>;
+}
 
 // It is a mock auth provider.
-export const authProvider: AuthBindings = (() => {
+export const authProvider: IAuthBindings = (() => {
   let isPresist: boolean = false;
   return {
     // required methods
@@ -19,7 +24,6 @@ export const authProvider: AuthBindings = (() => {
       password: string;
       remember: boolean;
     }): Promise<AuthActionResponse> => {
-
       const result = await featherInstance.authenticate({
         strategy: "local",
         email,
@@ -75,6 +79,9 @@ export const authProvider: AuthBindings = (() => {
         };
       }
       return {};
+    },
+    getIdentity: async () => {
+      return await featherInstance.get("authentication");
     },
   };
 })();

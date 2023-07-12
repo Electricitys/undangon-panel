@@ -60,6 +60,7 @@ import {
 import { Header } from "components";
 import { AuthPage } from "components/pages/auth";
 import { ThemedSiderV2 } from "components/themedLayout/sider";
+import { canHandler } from "accessControl";
 
 function App() {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -91,6 +92,15 @@ function App() {
                 authProvider={authProvider}
                 routerProvider={routerBindings}
                 dataProvider={dataProvider()}
+                accessControlProvider={{
+                  can: canHandler,
+                  options: {
+                    buttons: {
+                      enableAccessControl: true,
+                      hideIfUnauthorized: true,
+                    },
+                  },
+                }}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
