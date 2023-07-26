@@ -21,8 +21,22 @@ type IUser = {
   avatar: string;
 };
 
+type IAuth = {
+  accessToken: string;
+  name: string;
+  avatar: string;
+};
+
+type IIdentity = {
+  accessToken: IAuth["accessToken"];
+  authentiation: IAuth; 
+  user: IUser;
+};
+
 export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = () => {
-  const { data: user } = useGetIdentity<IUser>();
+  const { data } = useGetIdentity<IIdentity>();
+
+  const user = data?.user;
 
   const theme = useMantineTheme();
 
