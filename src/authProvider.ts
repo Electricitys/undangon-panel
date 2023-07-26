@@ -4,7 +4,7 @@ import {
   CheckResponse,
 } from "@refinedev/core/dist/interfaces";
 import { featherInstance } from "feathers-provider/feathersClient";
-import { AuthenticationResponse, UserSchema } from "interfaces";
+import { AuthenticationResponse } from "interfaces";
 
 interface IAuthBindings extends AuthBindings {
   getIdentity: (params?: any) => Promise<AuthenticationResponse>;
@@ -12,7 +12,6 @@ interface IAuthBindings extends AuthBindings {
 
 // It is a mock auth provider.
 export const authProvider: IAuthBindings = (() => {
-  let isPresist: boolean = false;
   return {
     // required methods
     login: async ({
